@@ -1,0 +1,89 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+import { Code } from 'astro:components';
+---
+
+<DocsLayout title="Node.js" section="node">
+  <h1>Node.js</h1>
+  <p class="lead">The <code>fanar</code> npm package works in any Node.js or TypeScript project. It sends payloads over HTTP in a fire-and-forget fashion — errors are silently swallowed so it never crashes your app.</p>
+
+  <h2>Installation</h2>
+  <Code code={`npm install fanar`} lang="bash" theme="github-dark" />
+
+  <h2>Basic usage</h2>
+  <p>Import and call <code>fanar()</code> with any value. The payload type is inferred automatically.</p>
+  <Code code={`import fanar from 'fanar'
+
+// Strings and primitives → log
+fanar('request received')
+fanar(42)
+
+// Objects and arrays → collapsible JSON tree
+fanar({ user, orders, session })
+
+// Error instances → stack trace with clickable frames
+fanar(new Error('something went wrong'))
+fanar(new TypeError('unexpected null'))`} lang="javascript" theme="github-dark" />
+
+  <h2>Labels and colors</h2>
+  <p>Chain <code>.label()</code> and <code>.color()</code> to annotate a payload. Labels appear in the header row and are searchable.</p>
+  <Code code={`fanar('user signed up').label('auth')
+fanar({ cart }).label('checkout').color('#a78bfa')`} lang="javascript" theme="github-dark" />
+  <p>Both methods must be chained synchronously — do not <code>await</code> between the <code>fanar()</code> call and the chain, or the label will be missed.</p>
+
+  <h2>SQL queries</h2>
+  <p>Use <code>fanar.query()</code> to send SQL with bound values and execution time. The app shows syntax highlighting and marks slow queries.</p>
+  <Code code={`fanar.query(sql, { bindings, duration })
+
+// Example
+const start = Date.now()
+const rows = await db.query('SELECT * FROM users WHERE id = ?', [userId])
+fanar.query('SELECT * FROM users WHERE id = ?', {
+  bindings: [userId],
+  duration: Date.now() - start,
+})`} lang="javascript" theme="github-dark" />
+
+  <h2>Named timers</h2>
+  <p>Measure any block of code with a named timer. Call <code>.stop()</code> to send the elapsed time.</p>
+  <Code code={`const t = fanar.time('render')
+await renderTemplate()
+t.stop()  // sends duration to the app
+
+// Inline — chain start and stop
+fanar.time('db-seed').stop()`} lang="javascript" theme="github-dark" />
+
+  <h2>fanar.measure()</h2>
+  <p>Send a pre-computed duration directly, without starting a timer.</p>
+  <Code code={`fanar.measure('import', 142)  // label, duration in ms`} lang="javascript" theme="github-dark" />
+
+  <h2>fanar.clear()</h2>
+  <p>Clear all stored payloads. Equivalent to pressing <code>⌘K</code> in the app or calling <code>DELETE /api/payloads</code>.</p>
+  <Code code={`await fanar.clear()`} lang="javascript" theme="github-dark" />
+
+  <h2>Request grouping</h2>
+  <p>Group all payloads from the same HTTP request under a shared <code>requestId</code> so they appear together in the app.</p>
+  <p>Use <code>fanar.middleware()</code> in Express or any Connect-compatible framework:</p>
+  <Code code={`import express from 'express'
+import fanar from 'fanar'
+
+const app = express()
+app.use(fanar.middleware())`} lang="javascript" theme="github-dark" />
+  <p>For non-middleware contexts (cron jobs, scripts, queue workers), use <code>fanar.run()</code> to wrap a block of code in a new request scope:</p>
+  <Code code={`fanar.run(() => {
+  fanar('step one')
+  fanar('step two')
+  // all payloads above share the same requestId
+})`} lang="javascript" theme="github-dark" />
+
+  <h2>Configuration</h2>
+  <p>By default Fanar connects to <code>localhost:23517</code>. Override host and port if needed.</p>
+  <Code code={`import { configure } from 'fanar/config'
+
+configure({ host: '192.168.1.5', port: 9913 })`} lang="javascript" theme="github-dark" />
+
+  <table>
+    <tr><th>Option</th><th>Default</th><th>Description</th></tr>
+    <tr><td>host</td><td>localhost</td><td>Hostname or IP of the machine running Fanar</td></tr>
+    <tr><td>port</td><td>23517</td><td>Port the Fanar desktop app is listening on</td></tr>
+  </table>
+</DocsLayout>

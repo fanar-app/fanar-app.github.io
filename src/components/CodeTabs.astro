@@ -1,0 +1,202 @@
+---
+import { Code } from 'astro:components';
+
+const tabs = ['Node.js', 'NestJS', 'PHP', 'Laravel', 'HTTP API'] as const;
+
+const snippets: Record<string, { lang: string; code: string }> = {
+  'Node.js': {
+    lang: 'javascript',
+    code: `import fanar from 'fanar'
+
+fanar('hello world')
+fanar({ user, orders })
+fanar(new Error('oops'))
+fanar.query(sql, { bindings, duration })
+fanar.time('render').stop()`,
+  },
+  'NestJS': {
+    lang: 'typescript',
+    code: `import { FanarModule } from 'fanar/nestjs'
+
+@Module({
+  imports: [FanarModule.register()],
+})
+export class AppModule {}
+
+// Auto-logs every request, query, and exception`,
+  },
+  'PHP': {
+    lang: 'php',
+    code: `<?php
+use Fanar\\Fanar;
+
+Fanar::dump('hello');
+Fanar::dump(['user' => $user, 'orders' => $orders]);
+Fanar::dump(new Exception('oops'));
+Fanar::query($sql, $bindings, $duration);
+Fanar::time('render')->stop();`,
+  },
+  'Laravel': {
+    lang: 'php',
+    code: `// config/app.php
+'providers' => [
+    Fanar\\Laravel\\FanarServiceProvider::class,
+],
+
+// .env
+FANAR_HOST=127.0.0.1
+FANAR_PORT=9913
+
+// Auto-logs every request, query, and exception`,
+  },
+  'HTTP API': {
+    lang: 'bash',
+    code: `curl -X POST http://localhost:9913/api/payloads \\
+  -H "Content-Type: application/json" \\
+  -d '{"type":"log","label":"Hello","content":"World"}'
+
+# Works from any language, script, or CI pipeline`,
+  },
+};
+---
+
+<section class="border-b border-[#222]">
+  <!-- Header: 2-column split -->
+  <div class="grid lg:grid-cols-2 border-b border-[#222]">
+    <div class="border-r border-[#222] px-10 lg:px-16 py-10">
+      <div class="text-[#a78bfa] text-xs font-mono mb-4">&lt; Client libraries &gt;</div>
+      <h2 class="text-4xl lg:text-5xl font-bold text-white leading-tight">
+        Send From Anywhere.
+      </h2>
+    </div>
+    <div class="px-10 lg:px-16 py-10 flex flex-col justify-center gap-5">
+      <p class="text-[#555] text-sm font-mono leading-relaxed">
+        One package for Node. One import for NestJS or Laravel.<br />
+        Or skip the library — plain HTTP works from anything.
+      </p>
+      <div class="text-xs text-[#4ade80] font-mono bg-[#080808] border border-[#222] px-4 py-3 flex items-center gap-0.5 w-fit min-w-[220px]">
+        <span id="install-cmd"></span><span class="typewriter-cursor">▌</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab bar -->
+  <div class="flex border-b border-[#222] overflow-x-auto" role="tablist">
+    {tabs.map((tab, i) => (
+      <button
+        role="tab"
+        data-tab={tab}
+        aria-selected={i === 0 ? 'true' : 'false'}
+        class={`px-6 py-3.5 text-xs font-mono whitespace-nowrap border-r border-[#222] transition-colors tab-btn ${
+          i === 0
+            ? 'text-white bg-[#111] border-b-2 border-b-[#7c3aed]'
+            : 'text-[#555] hover:text-white'
+        }`}
+      >
+        {tab}
+      </button>
+    ))}
+    <div class="flex-1"></div>
+  </div>
+
+  <!-- Tab panels — stacked in same grid cell for equal height -->
+  <div class="bg-[#080808] tab-panels-grid">
+    {tabs.map((tab, i) => (
+      <div role="tabpanel" data-panel={tab} class={`tab-panel${i !== 0 ? ' tab-panel--hidden' : ''}`}>
+        <Code code={snippets[tab].code} lang={snippets[tab].lang} theme="github-dark" />
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .tab-panels-grid {
+    display: grid;
+  }
+  .tab-panel {
+    grid-area: 1 / 1;
+  }
+  .tab-panel--hidden {
+    visibility: hidden;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .typewriter-cursor {
+    animation: blink 0.7s step-end infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  /* Strip Shiki's own background so code sits directly on the section */
+  .tab-panel pre {
+    background: transparent !important;
+    margin: 0;
+    padding: 2.5rem 3rem;
+  }
+  .tab-panel code {
+    background: transparent !important;
+  }
+</style>
+
+<script>
+  const installEl = document.getElementById('install-cmd');
+  if (installEl) {
+    const commands = ['npm install fanar', 'composer require fanar/fanar'];
+    let cmdIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+
+    function tick() {
+      const current = commands[cmdIndex];
+      if (!deleting) {
+        charIndex++;
+        installEl.textContent = current.slice(0, charIndex);
+        if (charIndex === current.length) {
+          setTimeout(() => { deleting = true; tick(); }, 2000);
+          return;
+        }
+        setTimeout(tick, 55);
+      } else {
+        charIndex--;
+        installEl.textContent = current.slice(0, charIndex);
+        if (charIndex === 0) {
+          deleting = false;
+          cmdIndex = (cmdIndex + 1) % commands.length;
+          setTimeout(tick, 350);
+          return;
+        }
+        setTimeout(tick, 25);
+      }
+    }
+
+    setTimeout(tick, 800);
+  }
+
+  document.querySelectorAll<HTMLElement>('section:has(.tab-btn)').forEach(section => {
+    const buttons = section.querySelectorAll<HTMLButtonElement>('.tab-btn');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab!;
+
+        buttons.forEach(b => {
+          b.classList.remove('text-white', 'bg-[#111]', 'border-b-2', 'border-b-[#7c3aed]');
+          b.classList.add('text-[#555]');
+          b.setAttribute('aria-selected', 'false');
+        });
+
+        btn.classList.add('text-white', 'bg-[#111]', 'border-b-2', 'border-b-[#7c3aed]');
+        btn.classList.remove('text-[#555]');
+        btn.setAttribute('aria-selected', 'true');
+
+        section.querySelectorAll<HTMLElement>('.tab-panel').forEach(p => {
+          p.classList.add('tab-panel--hidden');
+        });
+        section.querySelector<HTMLElement>(`[data-panel="${target}"]`)?.classList.remove('tab-panel--hidden');
+      });
+    });
+  });
+</script>

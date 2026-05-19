@@ -1,0 +1,33 @@
+---
+const features = [
+  { icon: 'globe',  title: 'Any Language', desc: 'Plain HTTP POST API. Works from Node, PHP, Python, Ruby, Go, or curl.' },
+  { icon: 'bolt',   title: 'Real-Time',    desc: 'No polling. Payloads stream to the app the moment they arrive.' },
+  { icon: 'table',  title: 'SQL Inspector', desc: 'Queries arrive with syntax highlighting, bound values, and execution time.' },
+  { icon: 'branch', title: 'Stack Traces', desc: 'Click any frame to open the exact file and line in VS Code.' },
+  { icon: 'clock',  title: 'Named Timers', desc: "fanar.time('render').stop() — measure anything with one line." },
+  { icon: 'cog',    title: 'Zero Config',  desc: 'One import auto-instruments NestJS and Laravel — fully automatic.' },
+];
+---
+
+<section class="border-b border-[#222]">
+  <div class="border-b border-[#222] px-10 lg:px-16 py-10">
+    <div class="text-[#a78bfa] text-xs font-mono mb-4">&lt; Features &gt;</div>
+    <h2 class="text-4xl lg:text-5xl font-bold text-white leading-tight">
+      Built For The Way<br />Developers Work.
+    </h2>
+  </div>
+  <div class="grid md:grid-cols-3">
+    {features.map((f, i) => (
+      <div class={`p-10 border-[#222] ${
+        // top row gets border-bottom, all get border-right except last in row
+        i < 3 ? 'border-b' : ''
+      } ${
+        i % 3 !== 2 ? 'border-r' : ''
+      }`}>
+        <i class={`hn hn-${f.icon} text-[#a78bfa] text-xl mb-6 block`}></i>
+        <h3 class="font-mono font-bold text-white text-base mb-2">{f.title}</h3>
+        <p class="text-xs text-[#444] font-mono leading-relaxed">{f.desc}</p>
+      </div>
+    ))}
+  </div>
+</section>

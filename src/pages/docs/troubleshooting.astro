@@ -1,0 +1,58 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+import { Code } from 'astro:components';
+---
+
+<DocsLayout title="Troubleshooting" section="troubleshooting">
+  <h1>Troubleshooting</h1>
+  <p class="lead">Common issues and how to fix them.</p>
+
+  <h2>Payloads not appearing</h2>
+  <p>First, confirm the Fanar desktop app is running and the feed is not paused (press <strong>Space</strong> to toggle).</p>
+  <p>Then verify the HTTP server is reachable from your app:</p>
+  <Code code={`curl -s -o /dev/null -w "%{http_code}" \\
+  -X POST http://localhost:23517/api/payloads \\
+  -H "Content-Type: application/json" \\
+  -d '{"type":"log","label":"test","content":"\"ping\""}'
+# Expected: 201`} lang="bash" theme="github-dark" />
+  <p>If this returns <code>201</code> but payloads still don't show, check that no active type filter or search is hiding them — the filter buttons in the top bar show active counts.</p>
+
+  <h2>Port conflict</h2>
+  <p>If another process is already using port 23517, Fanar fails to start its HTTP server. Check what's on the port:</p>
+  <Code code={`# macOS / Linux
+lsof -i :23517
+
+# Windows
+netstat -ano | findstr :23517`} lang="bash" theme="github-dark" />
+  <p>Either stop the conflicting process, or change Fanar's port in <strong>Preferences → Port</strong>. After changing the port, update your client configuration to match.</p>
+
+  <h2>App running in Docker or a VM</h2>
+  <p>Your containerised app cannot reach <code>localhost:23517</code> on your laptop directly — <code>localhost</code> inside the container refers to the container itself.</p>
+  <ul>
+    <li><strong>Docker Desktop (Mac/Windows)</strong> — use <code>host.docker.internal</code> as the Fanar host.</li>
+    <li><strong>Linux Docker</strong> — add <code>extra_hosts: ["host.docker.internal:host-gateway"]</code> to your compose file, then use <code>host.docker.internal</code>.</li>
+    <li><strong>Remote VM / staging server</strong> — use the <a href="/docs/ssh/" class="text-[#a78bfa] hover:text-white transition-colors">SSH tunnel</a> instead of a direct host/port.</li>
+  </ul>
+
+  <h2>Firewall blocking the port</h2>
+  <p>On some machines a firewall blocks inbound connections to 23517. Fanar only needs to be reachable from the machine running your app — usually <code>localhost</code>, which bypasses firewall rules. If you are connecting from a different machine over LAN, allow the port:</p>
+  <Code code={`# Ubuntu / Debian
+sudo ufw allow 23517
+
+# macOS — add a rule in System Settings → Network → Firewall`} lang="bash" theme="github-dark" />
+
+  <h2>CORS errors in a browser app</h2>
+  <p>Fanar's HTTP server allows all origins (<code>Access-Control-Allow-Origin: *</code>), so CORS should never be an issue. If you see a CORS error it usually means the request is going to the wrong port or the Fanar server is not running.</p>
+
+  <h2>SSH tunnel not connecting</h2>
+  <p>See the <a href="/docs/ssh/#troubleshooting" class="text-[#a78bfa] hover:text-white transition-colors">SSH Tunnel troubleshooting</a> section.</p>
+
+  <h2>VS Code file links not opening</h2>
+  <p>Clicking a file:line link in the feed opens <code>vscode://file/…</code>. This requires VS Code to be installed and registered as a URI handler. On Linux, run:</p>
+  <Code code={`code --install-extension # any extension install triggers the URI registration
+# or open VS Code once manually so it registers the vscode:// handler`} lang="bash" theme="github-dark" />
+  <p>On macOS and Windows, VS Code registers the URI handler automatically on first launch.</p>
+
+  <h2>Still stuck?</h2>
+  <p>Open an issue on <a href="https://github.com/fanar-app/fanar-app/issues" class="text-[#a78bfa] hover:text-white transition-colors">GitHub</a> with your OS, Fanar version, and the output of the <code>curl</code> test above.</p>
+</DocsLayout>

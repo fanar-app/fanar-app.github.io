@@ -1,0 +1,48 @@
+---
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Problem from '../components/Problem.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Features from '../components/Features.astro';
+import CodeTabs from '../components/CodeTabs.astro';
+import Integrations from '../components/Integrations.astro';
+import Downloads from '../components/Downloads.astro';
+import OpenSource from '../components/OpenSource.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fanar — See what your app is doing. Instantly.</title>
+    <meta name="description" content="Fanar is a debug receiver for any language or runtime. Send objects, errors, SQL queries, and timers — watch them appear in the desktop app in real time." />
+    <meta property="og:title" content="Fanar — See what your app is doing. Instantly." />
+    <meta property="og:description" content="A debug receiver for any language or runtime. Free & open source." />
+    <meta property="og:url" content="https://fanar-app.github.io" />
+    <meta property="og:image" content="/screenshot.png" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="max-w-[1400px] mx-auto border-x border-[#222]">
+      <Nav />
+      <main>
+        <Hero />
+        <Problem />
+        <HowItWorks />
+        <Features />
+        <CodeTabs />
+        <Downloads />
+        <OpenSource />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

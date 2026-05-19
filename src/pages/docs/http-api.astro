@@ -1,0 +1,72 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+import { Code } from 'astro:components';
+---
+
+<DocsLayout title="HTTP API" section="http-api">
+  <h1>HTTP API</h1>
+  <p class="lead">Fanar exposes a local HTTP server. Any language, script, or tool that can make HTTP requests can send payloads — no client library required.</p>
+
+  <h2>Base URL</h2>
+  <Code code={`http://localhost:23517`} lang="bash" theme="github-dark" />
+  <p>CORS is fully open. All origins are allowed.</p>
+
+  <h2>POST /api/payloads</h2>
+  <p>Send a payload. It appears in the desktop app instantly.</p>
+  <Code code={`curl -X POST http://localhost:23517/api/payloads \\
+  -H "Content-Type: application/json" \\
+  -d '{"type":"log","label":"hello","content":"\"world\""}'`} lang="bash" theme="github-dark" />
+
+  <p>Returns <code>201 Created</code> on success.</p>
+
+  <h3>Payload schema</h3>
+  <table>
+    <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    <tr><td>type</td><td>string</td><td>yes</td><td>One of: <code>log</code>, <code>object</code>, <code>exception</code>, <code>query</code>, <code>measure</code>, <code>request</code></td></tr>
+    <tr><td>content</td><td>string</td><td>yes</td><td>JSON-encoded value. For <code>log</code>, a quoted string. For <code>object</code>, any JSON value.</td></tr>
+    <tr><td>label</td><td>string</td><td>no</td><td>Display name shown in the header row</td></tr>
+    <tr><td>id</td><td>string</td><td>no</td><td>Unique ID. Auto-generated if omitted.</td></tr>
+    <tr><td>requestId</td><td>string</td><td>no</td><td>Groups related payloads (e.g. all payloads for one HTTP request)</td></tr>
+    <tr><td>project</td><td>string</td><td>no</td><td>Project name shown as a tag — useful when multiple apps send to the same Fanar instance</td></tr>
+    <tr><td>color</td><td>string</td><td>no</td><td>Hex color for the label row (e.g. <code>#4ade80</code>)</td></tr>
+    <tr><td>origin</td><td>object</td><td>no</td><td>Source location — enables clickable file:line in the app</td></tr>
+    <tr><td>origin.file</td><td>string</td><td>no</td><td>Absolute or relative file path</td></tr>
+    <tr><td>origin.line</td><td>number</td><td>no</td><td>Line number</td></tr>
+    <tr><td>origin.function</td><td>string</td><td>no</td><td>Function or method name</td></tr>
+  </table>
+
+  <h3>Full example</h3>
+  <Code code={`{
+  "id": "req-abc-001",
+  "requestId": "req-abc",
+  "type": "object",
+  "label": "user lookup",
+  "color": "#a78bfa",
+  "content": "{\\"id\\": 42, \\"name\\": \\"Alice\\", \\"role\\": \\"admin\\"}",
+  "origin": {
+    "file": "/app/services/user.ts",
+    "line": 87,
+    "function": "findById"
+  }
+}`} lang="json" theme="github-dark" />
+
+  <h3>Payload types</h3>
+  <table>
+    <tr><th>Type</th><th>content format</th><th>Rendered as</th></tr>
+    <tr><td>log</td><td>JSON string (<code>"hello"</code>)</td><td>Plain text log line</td></tr>
+    <tr><td>object</td><td>Any JSON value</td><td>Expandable JSON tree</td></tr>
+    <tr><td>exception</td><td>JSON with <code>name</code>, <code>message</code>, <code>stack</code> (string)</td><td>Stack trace with clickable frames</td></tr>
+    <tr><td>query</td><td>JSON with <code>sql</code>, <code>bindings</code>, <code>duration</code></td><td>Syntax-highlighted SQL + timing</td></tr>
+    <tr><td>measure</td><td>JSON with <code>duration</code></td><td>Elapsed time</td></tr>
+    <tr><td>request</td><td>JSON with <code>method</code>, <code>path</code>, <code>status</code>, <code>duration</code></td><td>HTTP request summary row</td></tr>
+  </table>
+
+  <h2>GET /api/payloads</h2>
+  <p>Returns all stored payloads as a JSON array, ordered by timestamp ascending. Fanar keeps the last 1,000 payloads.</p>
+  <Code code={`curl http://localhost:23517/api/payloads`} lang="bash" theme="github-dark" />
+
+  <h2>DELETE /api/payloads</h2>
+  <p>Clears all stored payloads. Equivalent to pressing <code>⌘K</code> in the app.</p>
+  <Code code={`curl -X DELETE http://localhost:23517/api/payloads`} lang="bash" theme="github-dark" />
+  <p>Returns <code>204 No Content</code>.</p>
+</DocsLayout>

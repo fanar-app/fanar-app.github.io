@@ -1,0 +1,59 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+import { Code } from 'astro:components';
+---
+
+<DocsLayout title="Configuration" section="configuration">
+  <h1>Configuration</h1>
+  <p class="lead">Fanar works out of the box with no configuration. The only setting you may need to change is the port if <code>23517</code> conflicts with another process.</p>
+
+  <h2>Default port</h2>
+  <p>The Fanar desktop app listens on <code>localhost:23517</code> by default. All official client libraries default to this address.</p>
+
+  <h2>Changing the port</h2>
+  <p>Open the Fanar desktop app and go to <strong>Settings</strong>. Change the port and restart — the new port is persisted across sessions.</p>
+
+  <h2>Node.js</h2>
+  <p>Call <code>configure()</code> once at startup, before any <code>fanar()</code> calls.</p>
+  <Code code={`import { configure } from 'fanar/config'
+
+configure({
+  host: 'localhost',  // default
+  port: 23517,        // default
+})`} lang="javascript" theme="github-dark" />
+
+  <h2>NestJS</h2>
+  <p>Pass options to <code>forRoot()</code> or <code>forRootAsync()</code>.</p>
+  <Code code={`FanarModule.forRoot({
+  enabled: process.env.NODE_ENV === 'development',
+  host: process.env.FANAR_HOST ?? 'localhost',
+  port: Number(process.env.FANAR_PORT ?? 23517),
+})`} lang="typescript" theme="github-dark" />
+
+  <h2>Laravel</h2>
+  <Code code={`# .env
+FANAR_HOST=127.0.0.1
+FANAR_PORT=23517
+FANAR_ENABLED=true`} lang="bash" theme="github-dark" />
+
+  <h2>PHP</h2>
+  <Code code={`<?php
+use Fanar\\Fanar;
+
+Fanar::configure([
+  'host' => '127.0.0.1',
+  'port' => 23517,
+]);`} lang="php" theme="github-dark" />
+
+  <h2>SSH tunnel</h2>
+  <p>If your app runs on a remote server (staging, CI, Docker) and you can't set a direct LAN IP, use Fanar's built-in SSH tunnel instead. Open <strong>Preferences → SSH Tunnel</strong>, enter your server credentials, and Fanar forwards the port over SSH automatically. See the <a href="/docs/ssh/" class="text-[#a78bfa] hover:text-white transition-colors">SSH Tunnel</a> page for setup details.</p>
+
+  <h2>Remote machines</h2>
+  <p>If Fanar runs on a different machine (e.g. your laptop while code runs in a VM or container), set the host to the LAN IP of the machine running the desktop app.</p>
+  <Code code={`# Node.js
+configure({ host: '192.168.1.10', port: 23517 })
+
+# Laravel .env
+FANAR_HOST=192.168.1.10`} lang="bash" theme="github-dark" />
+  <p>Make sure the Fanar port is reachable from the client machine (firewall / Docker port binding).</p>
+</DocsLayout>

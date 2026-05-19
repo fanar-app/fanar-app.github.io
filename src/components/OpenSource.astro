@@ -1,0 +1,50 @@
+---
+const items = [
+  'No telemetry or analytics',
+  'No account required',
+  'No paywalls or seat licenses',
+  'MIT License — use it anywhere',
+  'Source available on GitHub',
+  'Self-hosted, no cloud dependency',
+];
+---
+<section class="border-b border-[#222] p-10 lg:p-16">
+  <div class="text-[#a78bfa] text-xs font-mono mb-4">&lt; Open source &gt;</div>
+
+  <h2 class="text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
+    MIT Licensed.<br />Free Forever.
+  </h2>
+
+  <p class="text-[#555] text-sm font-mono leading-relaxed mb-8 max-w-lg">
+    No telemetry. No paywalls. No seat licenses.
+    Built in the open. If it helps you, star it.
+  </p>
+
+  <div class="flex items-center gap-3 flex-wrap mb-12">
+    <a
+      href="https://github.com/fanar-app/fanar-app"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="border border-white px-5 py-2.5 text-black bg-white font-mono text-sm font-bold hover:bg-transparent hover:text-white transition-colors"
+    >
+      ★ Star on GitHub
+    </a>
+    <a
+      href="https://github.com/fanar-app/fanar-app"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="border border-[#444] px-5 py-2.5 text-white font-mono text-sm hover:border-white transition-colors"
+    >
+      Read the source →
+    </a>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-3">
+    {items.map(item => (
+      <div class="flex items-center gap-3 border border-[#222] px-5 py-3 font-mono text-sm text-[#777]">
+        <span class="text-[#4ade80] shrink-0">✓</span>
+        {item}
+      </div>
+    ))}
+  </div>
+</section>

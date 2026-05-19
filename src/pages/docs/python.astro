@@ -1,0 +1,88 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+import { Code } from 'astro:components';
+---
+
+<DocsLayout title="Python" section="python">
+  <h1>Python</h1>
+  <p class="lead">The <code>fanar</code> PyPI package works in any Python 3.8+ project — Django, Flask, FastAPI, scripts, or notebooks. Payloads are sent in a background thread so they never block your code.</p>
+
+  <h2>Installation</h2>
+  <Code code={`pip install fanar`} lang="bash" theme="github-dark" />
+
+  <h2>Basic usage</h2>
+  <Code code={`import fanar
+
+# Strings and primitives → log
+fanar.log('request received')
+fanar.log(42)
+
+# Dicts, lists, objects → collapsible JSON tree
+fanar.dump({'user': user, 'session': session})
+fanar.dump(response.json())
+
+# Exceptions → stack trace with clickable frames
+try:
+    process_order(order)
+except Exception as e:
+    fanar.exception(e)`} lang="python" theme="github-dark" />
+
+  <h2>Labels and project tags</h2>
+  <p>Pass <code>label</code> and <code>project</code> keyword arguments to any call. Labels appear in the header row and are searchable.</p>
+  <Code code={`fanar.log('cache miss', label='redis')
+fanar.dump(payload, label='incoming webhook', project='billing')`} lang="python" theme="github-dark" />
+
+  <h2>SQL queries</h2>
+  <p>Use <code>fanar.query()</code> to send SQL with bound values and execution time. The app shows syntax highlighting and marks slow queries.</p>
+  <Code code={`import time
+import fanar
+
+start = time.monotonic()
+rows = cursor.execute('SELECT * FROM orders WHERE user_id = %s', [user_id])
+fanar.query(
+    'SELECT * FROM orders WHERE user_id = %s',
+    bindings=[user_id],
+    duration=int((time.monotonic() - start) * 1000),
+)`} lang="python" theme="github-dark" />
+
+  <h2>Named timers</h2>
+  <p>Measure any block of code. Call <code>.stop()</code> to send the elapsed time.</p>
+  <Code code={`t = fanar.time('render-pdf')
+render_pdf(report)
+t.stop()
+
+# As a context manager
+with fanar.timer('send-emails'):
+    send_batch(recipients)`} lang="python" theme="github-dark" />
+
+  <h2>Django integration</h2>
+  <p>Add <code>FanarMiddleware</code> to capture every request automatically, including queries and exceptions.</p>
+  <Code code={`# settings.py
+MIDDLEWARE = [
+    'fanar.django.FanarMiddleware',
+    # ... rest of your middleware
+]
+
+FANAR = {
+    'ENABLED': DEBUG,
+    'HOST': '127.0.0.1',
+    'PORT': 23517,
+}`} lang="python" theme="github-dark" />
+
+  <h2>Configuration</h2>
+  <p>Configure once at startup — before any <code>fanar.*</code> calls.</p>
+  <Code code={`import fanar
+
+fanar.configure(
+    host='localhost',  # default
+    port=23517,        # default
+    enabled=True,      # set to False to disable without removing calls
+)`} lang="python" theme="github-dark" />
+
+  <table>
+    <tr><th>Option</th><th>Default</th><th>Description</th></tr>
+    <tr><td>host</td><td>localhost</td><td>Hostname or IP of the machine running Fanar</td></tr>
+    <tr><td>port</td><td>23517</td><td>Port the Fanar desktop app is listening on</td></tr>
+    <tr><td>enabled</td><td>True</td><td>Set to <code>False</code> to disable without removing calls</td></tr>
+  </table>
+</DocsLayout>

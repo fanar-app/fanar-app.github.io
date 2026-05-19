@@ -1,0 +1,55 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+import { Code } from 'astro:components';
+---
+
+<DocsLayout title="Getting Started" section="getting-started">
+  <h1>Getting Started</h1>
+  <p class="lead">Fanar is a local debug receiver. Download the desktop app, install a client library, and start sending payloads in under a minute.</p>
+
+  <h2>1. Download the app</h2>
+  <p>Fanar runs a local HTTP server on <code>localhost:23517</code>. Download and open it — no account, no configuration required.</p>
+  <table>
+    <tr><th>Platform</th><th>Download</th></tr>
+    <tr><td>macOS Apple Silicon</td><td><a href="https://github.com/fanar-app/fanar-app/releases/latest/download/fanar-macos-arm64.zip" class="text-[#a78bfa] hover:text-white transition-colors">fanar-macos-arm64.zip</a></td></tr>
+    <tr><td>macOS Intel</td><td><a href="https://github.com/fanar-app/fanar-app/releases/latest/download/fanar-macos-x64.zip" class="text-[#a78bfa] hover:text-white transition-colors">fanar-macos-x64.zip</a></td></tr>
+    <tr><td>Windows</td><td><a href="https://github.com/fanar-app/fanar-app/releases/latest/download/fanar-windows-x64.exe" class="text-[#a78bfa] hover:text-white transition-colors">fanar-windows-x64.exe</a></td></tr>
+    <tr><td>Linux</td><td><a href="https://github.com/fanar-app/fanar-app/releases/latest/download/fanar-linux-x64" class="text-[#a78bfa] hover:text-white transition-colors">fanar-linux-x64</a></td></tr>
+  </table>
+
+  <h2>2. Install a client</h2>
+  <p>Pick the library for your stack. Or skip directly to the <a href="/docs/http-api/" class="text-[#a78bfa] hover:text-white transition-colors">HTTP API</a> — any language that can POST JSON works.</p>
+
+  <h3>Node.js / TypeScript</h3>
+  <Code code={`npm install fanar`} lang="bash" theme="github-dark" />
+
+  <h3>PHP / Laravel</h3>
+  <Code code={`composer require fanar/fanar`} lang="bash" theme="github-dark" />
+
+  <h2>3. Send your first payload</h2>
+  <p>Call <code>fanar()</code> anywhere in your code. The payload appears in the desktop app instantly.</p>
+  <Code code={`import fanar from 'fanar'
+
+fanar('hello world')          // string log
+fanar({ user, cart })         // object — collapsible JSON tree
+fanar(new Error('oh no'))     // exception — clickable stack frames`} lang="javascript" theme="github-dark" />
+
+  <h2>4. What appears in the app</h2>
+  <ul>
+    <li>Every <code>fanar()</code> call streams in real time — no polling, no page refresh</li>
+    <li>Objects render as an expandable JSON tree</li>
+    <li>Exceptions show a full stack trace with clickable file:line links that open VS Code</li>
+    <li>SQL queries show syntax highlighting, bound values, and execution time</li>
+    <li>Timers show elapsed time between <code>.start()</code> and <code>.stop()</code></li>
+  </ul>
+
+  <h2>Keyboard shortcuts</h2>
+  <table>
+    <tr><th>Shortcut</th><th>Action</th></tr>
+    <tr><td>⌘K / Ctrl+K</td><td>Clear all payloads</td></tr>
+    <tr><td>⌘F / Ctrl+F</td><td>Focus search</td></tr>
+    <tr><td>Space</td><td>Pause / resume live feed</td></tr>
+    <tr><td>Esc</td><td>Clear search</td></tr>
+    <tr><td>?</td><td>Show keyboard shortcuts</td></tr>
+  </table>
+</DocsLayout>

@@ -1,0 +1,53 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+import { Code } from 'astro:components';
+---
+
+<DocsLayout title="SSH Tunnel" section="ssh">
+  <h1>SSH Tunnel</h1>
+  <p class="lead">Run your app on a remote server — staging, CI, a Docker VM, or any machine you SSH into — and still see payloads in the local Fanar desktop app. The built-in SSH tunnel forwards the Fanar port over SSH with no extra tools required.</p>
+
+  <h2>How it works</h2>
+  <p>Fanar opens a reverse SSH tunnel from the remote server back to your laptop. Your app sends payloads to <code>localhost:23517</code> on the server, and they arrive in the desktop app as if the app were running locally.</p>
+  <p>No VPN, no firewall changes, no ngrok. As long as you can SSH into the server, the tunnel works.</p>
+
+  <h2>Setup</h2>
+  <p>Open the Fanar desktop app and go to <strong>Preferences → SSH Tunnel</strong>. Fill in three fields:</p>
+
+  <table>
+    <tr><th>Field</th><th>Example</th><th>Description</th></tr>
+    <tr><td>User</td><td><code>ubuntu</code></td><td>SSH username on the remote server</td></tr>
+    <tr><td>Host</td><td><code>staging.myapp.com</code></td><td>Hostname or IP of the remote server</td></tr>
+    <tr><td>Remote port</td><td><code>23517</code></td><td>Port Fanar listens on — the tunnel binds this port on the remote machine</td></tr>
+  </table>
+
+  <p>The app generates the equivalent SSH command so you can verify or run it manually:</p>
+  <Code code={`ssh -R 23517:localhost:23517 ubuntu@staging.myapp.com`} lang="bash" theme="github-dark" />
+
+  <p>Click <strong>Connect</strong>. The status indicator turns green when the tunnel is live.</p>
+
+  <h2>Authentication</h2>
+  <p>Fanar uses your system SSH agent and <code>~/.ssh/config</code>. If you can run <code>ssh user@host</code> in a terminal without a password prompt, the tunnel will connect without one too.</p>
+  <p>If your key requires a passphrase, add it to the SSH agent first:</p>
+  <Code code={`ssh-add ~/.ssh/id_ed25519`} lang="bash" theme="github-dark" />
+
+  <h2>Client configuration</h2>
+  <p>Your app on the remote server sends payloads to <code>localhost:23517</code> — the default — so no client configuration change is needed. The tunnel makes the remote <code>localhost:23517</code> point back to your laptop.</p>
+
+  <h2>Docker and containers</h2>
+  <p>If your app runs inside a Docker container on the remote host, the container needs to reach the host's <code>localhost</code>. Use <code>host.docker.internal</code> on Docker Desktop, or the host gateway IP on Linux:</p>
+  <Code code={`# docker-compose.yml
+services:
+  app:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      FANAR_HOST: host.docker.internal`} lang="yaml" theme="github-dark" />
+
+  <h2>Troubleshooting</h2>
+  <ul>
+    <li><strong>Status stays "Disconnected"</strong> — confirm you can SSH to the host without a password from the terminal. Check that your SSH agent is running (<code>ssh-add -l</code>).</li>
+    <li><strong>Port already in use</strong> — another process on the remote server is using port 23517. Either stop it or change the Fanar port in <strong>Preferences → Port</strong> and update the remote port field to match.</li>
+    <li><strong>Payloads not arriving</strong> — verify the client is sending to the correct host/port. Run <code>curl -s http://localhost:23517/api/payloads</code> on the remote server to confirm the tunnel endpoint is reachable.</li>
+  </ul>
+</DocsLayout>

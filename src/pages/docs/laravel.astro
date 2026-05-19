@@ -1,0 +1,50 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+import { Code } from 'astro:components';
+---
+
+<DocsLayout title="Laravel" section="laravel">
+  <h1>Laravel</h1>
+  <p class="lead">Register the Fanar service provider and every request, query, exception, and cache event is captured automatically. Zero boilerplate.</p>
+
+  <h2>Installation</h2>
+  <Code code={`composer require fanar/fanar`} lang="bash" theme="github-dark" />
+
+  <h2>Register the service provider</h2>
+  <Code code={`// config/app.php
+'providers' => [
+    // ...
+    Fanar\\Laravel\\FanarServiceProvider::class,
+],`} lang="php" theme="github-dark" />
+
+  <h2>Environment variables</h2>
+  <Code code={`# .env
+FANAR_HOST=127.0.0.1
+FANAR_PORT=23517
+FANAR_ENABLED=true`} lang="bash" theme="github-dark" />
+
+  <table>
+    <tr><th>Variable</th><th>Default</th><th>Description</th></tr>
+    <tr><td>FANAR_HOST</td><td>127.0.0.1</td><td>Hostname of the machine running Fanar</td></tr>
+    <tr><td>FANAR_PORT</td><td>23517</td><td>Port the Fanar desktop app is listening on</td></tr>
+    <tr><td>FANAR_ENABLED</td><td>true</td><td>Set to <code>false</code> to disable without removing the provider</td></tr>
+  </table>
+
+  <h2>What gets captured automatically</h2>
+  <ul>
+    <li>Every HTTP request — method, path, status, duration, query count</li>
+    <li>All Eloquent / DB queries — SQL, bindings, execution time</li>
+    <li>Uncaught exceptions — with stack trace</li>
+    <li>Cache hits and misses</li>
+    <li>Queued jobs — dispatch and execution</li>
+  </ul>
+
+  <h2>Manual calls</h2>
+  <p>You can also call Fanar directly anywhere in your Laravel app.</p>
+  <Code code={`use Fanar\\Fanar;
+
+// In a controller, service, command, job — anywhere
+Fanar::log('processing order #' . $order->id);
+Fanar::dump($order->toArray());
+Fanar::exception($e);`} lang="php" theme="github-dark" />
+</DocsLayout>

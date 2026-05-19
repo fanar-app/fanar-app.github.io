@@ -1,0 +1,99 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+import { Code } from 'astro:components';
+---
+
+<DocsLayout title="NestJS" section="nestjs">
+  <h1>NestJS</h1>
+  <p class="lead">One import auto-instruments your entire NestJS app. Every HTTP request, exception, and database query appears in Fanar automatically — no decorators, no boilerplate.</p>
+
+  <h2>Installation</h2>
+  <Code code={`npm install fanar`} lang="bash" theme="github-dark" />
+
+  <h2>FanarModule.forRoot()</h2>
+  <p>Register the module in your root <code>AppModule</code>. This installs a global interceptor that captures every request.</p>
+  <Code code={`import { FanarModule } from 'fanar/nestjs'
+
+@Module({
+  imports: [
+    FanarModule.forRoot({ enabled: true }),
+  ],
+})
+export class AppModule {}`} lang="typescript" theme="github-dark" />
+
+  <table>
+    <tr><th>Option</th><th>Default</th><th>Description</th></tr>
+    <tr><td>enabled</td><td>true</td><td>Set to <code>false</code> to disable without removing the import</td></tr>
+    <tr><td>host</td><td>localhost</td><td>Fanar desktop app hostname</td></tr>
+    <tr><td>port</td><td>23517</td><td>Fanar desktop app port</td></tr>
+  </table>
+
+  <h2>FanarModule.forRootAsync()</h2>
+  <p>Use when options come from a config service or environment variables.</p>
+  <Code code={`import { FanarModule } from 'fanar/nestjs'
+import { ConfigService } from '@nestjs/config'
+
+@Module({
+  imports: [
+    FanarModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        enabled: config.get('NODE_ENV') === 'development',
+        port: config.get('FANAR_PORT'),
+      }),
+    }),
+  ],
+})
+export class AppModule {}`} lang="typescript" theme="github-dark" />
+
+  <h2>@Fanar() decorator</h2>
+  <p>Wrap any service method to automatically send its arguments, return value, and execution time.</p>
+  <Code code={`import { Fanar } from 'fanar/nestjs'
+
+@Injectable()
+export class UserService {
+  @Fanar()
+  async findById(id: string): Promise<User> {
+    return this.repo.findOne(id)
+  }
+}`} lang="typescript" theme="github-dark" />
+
+  <p>Works with sync methods, async methods, and async generators. Exceptions are re-thrown after being sent.</p>
+
+  <h2>TypeORM integration</h2>
+  <p>Pass <code>FanarTypeOrmLogger</code> as the TypeORM logger to capture all queries.</p>
+  <Code code={`import { FanarTypeOrmLogger } from 'fanar/nestjs'
+
+TypeOrmModule.forRoot({
+  type: 'postgres',
+  // ...
+  logger: new FanarTypeOrmLogger(),
+})`} lang="typescript" theme="github-dark" />
+
+  <h2>Prisma integration</h2>
+  <p>Wrap your <code>PrismaClient</code> instance with <code>withFanar()</code>. Requires Prisma's query event logging to be enabled.</p>
+  <Code code={`import { withFanar } from 'fanar/nestjs'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = withFanar(
+  new PrismaClient({
+    log: [{ emit: 'event', level: 'query' }],
+  })
+)`} lang="typescript" theme="github-dark" />
+
+  <h2>FanarInterceptor</h2>
+  <p>If you prefer not to use <code>FanarModule</code>, you can apply the interceptor manually to specific controllers or routes.</p>
+  <Code code={`import { FanarInterceptor } from 'fanar/nestjs'
+
+@UseInterceptors(FanarInterceptor)
+@Controller('users')
+export class UsersController {}`} lang="typescript" theme="github-dark" />
+
+  <h2>What gets captured automatically</h2>
+  <ul>
+    <li>Every HTTP request — method, path, status code, duration, query count</li>
+    <li>Uncaught exceptions — with stack trace</li>
+    <li>TypeORM queries — SQL, bound values (via <code>FanarTypeOrmLogger</code>)</li>
+    <li>Prisma queries — SQL, bound values (via <code>withFanar()</code>)</li>
+  </ul>
+</DocsLayout>
