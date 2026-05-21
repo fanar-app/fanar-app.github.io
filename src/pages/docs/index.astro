@@ -11,24 +11,24 @@ import { Code } from 'astro:components';
   <p>Fanar runs a local HTTP server on <code>localhost:23517</code>. Download and open it — no account, no configuration required.</p>
   <table>
     <tr><th>Platform</th><th>Download</th></tr>
-    <tr><td>macOS Apple Silicon</td><td><a href="https://github.com/fanar-app/fanar-app/releases/latest/download/fanar-macos-arm64.zip" class="text-[#a78bfa] hover:text-white transition-colors">fanar-macos-arm64.zip</a></td></tr>
-    <tr><td>macOS Intel</td><td><a href="https://github.com/fanar-app/fanar-app/releases/latest/download/fanar-macos-x64.zip" class="text-[#a78bfa] hover:text-white transition-colors">fanar-macos-x64.zip</a></td></tr>
-    <tr><td>Windows</td><td><a href="https://github.com/fanar-app/fanar-app/releases/latest/download/fanar-windows-x64.exe" class="text-[#a78bfa] hover:text-white transition-colors">fanar-windows-x64.exe</a></td></tr>
-    <tr><td>Linux</td><td><a href="https://github.com/fanar-app/fanar-app/releases/latest/download/fanar-linux-x64" class="text-[#a78bfa] hover:text-white transition-colors">fanar-linux-x64</a></td></tr>
+    <tr><td>macOS Apple Silicon</td><td><a href="https://github.com/fanar-app/fanar/releases/latest/download/fanar-darwin-arm64.zip" class="text-[#a78bfa] hover:text-white transition-colors">fanar-darwin-arm64.zip</a></td></tr>
+    <tr><td>macOS Intel</td><td><a href="https://github.com/fanar-app/fanar/releases/latest/download/fanar-darwin-amd64.zip" class="text-[#a78bfa] hover:text-white transition-colors">fanar-darwin-amd64.zip</a></td></tr>
+    <tr><td>Windows</td><td><a href="https://github.com/fanar-app/fanar/releases/latest/download/fanar-windows-amd64.exe" class="text-[#a78bfa] hover:text-white transition-colors">fanar-windows-amd64.exe</a></td></tr>
+    <tr><td>Linux</td><td><a href="https://github.com/fanar-app/fanar/releases/latest/download/fanar-linux-amd64" class="text-[#a78bfa] hover:text-white transition-colors">fanar-linux-amd64</a></td></tr>
   </table>
 
   <h2>2. Install a client</h2>
   <p>Pick the library for your stack. Or skip directly to the <a href="/docs/http-api/" class="text-[#a78bfa] hover:text-white transition-colors">HTTP API</a> — any language that can POST JSON works.</p>
 
   <h3>Node.js / TypeScript</h3>
-  <Code code={`npm install fanar`} lang="bash" theme="github-dark" />
+  <Code code={`npm install @fanar-app/fanar`} lang="bash" theme="github-dark" />
 
   <h3>PHP / Laravel</h3>
   <Code code={`composer require fanar/fanar`} lang="bash" theme="github-dark" />
 
   <h2>3. Send your first payload</h2>
   <p>Call <code>fanar()</code> anywhere in your code. The payload appears in the desktop app instantly.</p>
-  <Code code={`import fanar from 'fanar'
+  <Code code={`import fanar from '@fanar-app/fanar'
 
 fanar('hello world')          // string log
 fanar({ user, cart })         // object — collapsible JSON tree
