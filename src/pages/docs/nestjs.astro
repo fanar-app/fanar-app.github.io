@@ -8,11 +8,11 @@ import { Code } from 'astro:components';
   <p class="lead">One import auto-instruments your entire NestJS app. Every HTTP request, exception, and database query appears in Fanar automatically — no decorators, no boilerplate.</p>
 
   <h2>Installation</h2>
-  <Code code={`npm install fanar`} lang="bash" theme="github-dark" />
+  <Code code={`npm install @fanar-app/fanar`} lang="bash" theme="github-dark" />
 
   <h2>FanarModule.forRoot()</h2>
   <p>Register the module in your root <code>AppModule</code>. This installs a global interceptor that captures every request.</p>
-  <Code code={`import { FanarModule } from 'fanar/nestjs'
+  <Code code={`import { FanarModule } from '@fanar-app/fanar/nestjs'
 
 @Module({
   imports: [
@@ -30,7 +30,7 @@ export class AppModule {}`} lang="typescript" theme="github-dark" />
 
   <h2>FanarModule.forRootAsync()</h2>
   <p>Use when options come from a config service or environment variables.</p>
-  <Code code={`import { FanarModule } from 'fanar/nestjs'
+  <Code code={`import { FanarModule } from '@fanar-app/fanar/nestjs'
 import { ConfigService } from '@nestjs/config'
 
 @Module({
@@ -48,7 +48,7 @@ export class AppModule {}`} lang="typescript" theme="github-dark" />
 
   <h2>@Fanar() decorator</h2>
   <p>Wrap any service method to automatically send its arguments, return value, and execution time.</p>
-  <Code code={`import { Fanar } from 'fanar/nestjs'
+  <Code code={`import { Fanar } from '@fanar-app/fanar/nestjs'
 
 @Injectable()
 export class UserService {
@@ -62,7 +62,7 @@ export class UserService {
 
   <h2>TypeORM integration</h2>
   <p>Pass <code>FanarTypeOrmLogger</code> as the TypeORM logger to capture all queries.</p>
-  <Code code={`import { FanarTypeOrmLogger } from 'fanar/nestjs'
+  <Code code={`import { FanarTypeOrmLogger } from '@fanar-app/fanar/nestjs'
 
 TypeOrmModule.forRoot({
   type: 'postgres',
@@ -72,7 +72,7 @@ TypeOrmModule.forRoot({
 
   <h2>Prisma integration</h2>
   <p>Wrap your <code>PrismaClient</code> instance with <code>withFanar()</code>. Requires Prisma's query event logging to be enabled.</p>
-  <Code code={`import { withFanar } from 'fanar/nestjs'
+  <Code code={`import { withFanar } from '@fanar-app/fanar/nestjs'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = withFanar(
@@ -83,7 +83,7 @@ const prisma = withFanar(
 
   <h2>FanarInterceptor</h2>
   <p>If you prefer not to use <code>FanarModule</code>, you can apply the interceptor manually to specific controllers or routes.</p>
-  <Code code={`import { FanarInterceptor } from 'fanar/nestjs'
+  <Code code={`import { FanarInterceptor } from '@fanar-app/fanar/nestjs'
 
 @UseInterceptors(FanarInterceptor)
 @Controller('users')

@@ -16,7 +16,7 @@ const downloadHref = isHome ? '#downloads' : '/#downloads';
         Docs
       </a>
       <a
-        href="https://github.com/fanar-app/fanar-app"
+        href="https://github.com/fanar-app/fanar"
         target="_blank"
         rel="noopener noreferrer"
         class="flex items-center gap-2 px-5 h-full border-l border-[#222] text-xs font-mono text-[#555] hover:text-white transition-colors"
@@ -38,7 +38,7 @@ const downloadHref = isHome ? '#downloads' : '/#downloads';
 </nav>
 
 <script>
-  fetch('https://api.github.com/repos/fanar-app/fanar-app')
+  fetch('https://api.github.com/repos/fanar-app/fanar')
     .then(r => r.json())
     .then(data => {
       const el = document.getElementById('star-count');

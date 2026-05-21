@@ -8,11 +8,11 @@ import { Code } from 'astro:components';
   <p class="lead">The <code>fanar</code> npm package works in any Node.js or TypeScript project. It sends payloads over HTTP in a fire-and-forget fashion — errors are silently swallowed so it never crashes your app.</p>
 
   <h2>Installation</h2>
-  <Code code={`npm install fanar`} lang="bash" theme="github-dark" />
+  <Code code={`npm install @fanar-app/fanar`} lang="bash" theme="github-dark" />
 
   <h2>Basic usage</h2>
   <p>Import and call <code>fanar()</code> with any value. The payload type is inferred automatically.</p>
-  <Code code={`import fanar from 'fanar'
+  <Code code={`import fanar from '@fanar-app/fanar'
 
 // Strings and primitives → log
 fanar('request received')
@@ -64,7 +64,7 @@ fanar.time('db-seed').stop()`} lang="javascript" theme="github-dark" />
   <p>Group all payloads from the same HTTP request under a shared <code>requestId</code> so they appear together in the app.</p>
   <p>Use <code>fanar.middleware()</code> in Express or any Connect-compatible framework:</p>
   <Code code={`import express from 'express'
-import fanar from 'fanar'
+import fanar from '@fanar-app/fanar'
 
 const app = express()
 app.use(fanar.middleware())`} lang="javascript" theme="github-dark" />
@@ -77,7 +77,7 @@ app.use(fanar.middleware())`} lang="javascript" theme="github-dark" />
 
   <h2>Configuration</h2>
   <p>By default Fanar connects to <code>localhost:23517</code>. Override host and port if needed.</p>
-  <Code code={`import { configure } from 'fanar/config'
+  <Code code={`import { configure } from '@fanar-app/fanar/config'
 
 configure({ host: '192.168.1.5', port: 9913 })`} lang="javascript" theme="github-dark" />
 

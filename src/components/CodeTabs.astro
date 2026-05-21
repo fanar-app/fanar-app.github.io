@@ -6,7 +6,7 @@ const tabs = ['Node.js', 'NestJS', 'PHP', 'Laravel', 'HTTP API'] as const;
 const snippets: Record<string, { lang: string; code: string }> = {
   'Node.js': {
     lang: 'javascript',
-    code: `import fanar from 'fanar'
+    code: `import fanar from '@fanar-app/fanar'
 
 fanar('hello world')
 fanar({ user, orders })
@@ -16,7 +16,7 @@ fanar.time('render').stop()`,
   },
   'NestJS': {
     lang: 'typescript',
-    code: `import { FanarModule } from 'fanar/nestjs'
+    code: `import { FanarModule } from '@fanar-app/fanar/nestjs'
 
 @Module({
   imports: [FanarModule.register()],
@@ -144,7 +144,7 @@ FANAR_PORT=9913
 <script>
   const installEl = document.getElementById('install-cmd');
   if (installEl) {
-    const commands = ['npm install fanar', 'composer require fanar/fanar'];
+    const commands = ['npm install @fanar-app/fanar', 'composer require fanar/fanar'];
     let cmdIndex = 0;
     let charIndex = 0;
     let deleting = false;
