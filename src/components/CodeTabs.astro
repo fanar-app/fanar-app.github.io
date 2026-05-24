@@ -3,6 +3,15 @@ import { Code } from 'astro:components';
 
 const tabs = ['Node.js', 'NestJS', 'PHP', 'Laravel', 'Browser', 'HTTP API'] as const;
 
+const docsHref: Record<string, string> = {
+  'Node.js':  '/docs/node/',
+  'NestJS':   '/docs/nestjs/',
+  'PHP':      '/docs/php/',
+  'Laravel':  '/docs/laravel/',
+  'Browser':  '/docs/browser/',
+  'HTTP API': '/docs/http-api/',
+};
+
 const snippets: Record<string, { lang: string; code: string }> = {
   'Node.js': {
     lang: 'javascript',
@@ -112,8 +121,9 @@ FANAR_PORT=9913
   <!-- Tab panels — stacked in same grid cell for equal height -->
   <div class="bg-[#080808] tab-panels-grid">
     {tabs.map((tab, i) => (
-      <div role="tabpanel" data-panel={tab} class={`tab-panel${i !== 0 ? ' tab-panel--hidden' : ''}`}>
+      <div role="tabpanel" data-panel={tab} class={`tab-panel relative${i !== 0 ? ' tab-panel--hidden' : ''}`}>
         <Code code={snippets[tab].code} lang={snippets[tab].lang} theme="github-dark" />
+        <a href={docsHref[tab]} class="docs-link">docs →</a>
       </div>
     ))}
   </div>
@@ -138,6 +148,23 @@ FANAR_PORT=9913
   @keyframes blink {
     0%, 100% { opacity: 1; }
     50%       { opacity: 0; }
+  }
+
+  .docs-link {
+    position: absolute;
+    bottom: 1.25rem;
+    right: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: #555;
+    border: 1px solid #333;
+    padding: 0.15rem 0.6rem;
+    text-decoration: none;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .docs-link:hover {
+    color: #fff;
+    border-color: #555;
   }
 
   /* Strip Shiki's own background so code sits directly on the section */
