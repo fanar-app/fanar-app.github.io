@@ -1,0 +1,54 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+import { Code } from 'astro:components';
+---
+
+<DocsLayout title="Browser" section="browser">
+  <h1>Browser</h1>
+  <p class="lead">Drop a script tag into any page — or import as an ES module. Same API as the Node.js client. No build step required.</p>
+
+  <h2>Script tag (CDN)</h2>
+  <Code code={`<script src="https://cdn.jsdelivr.net/npm/@fanar-app/fanar-browser/dist/fanar.js"></script>
+<script>
+  fanar('hello from the browser')
+  fanar({ user, cart }).label('checkout')
+  fanar(new Error('something went wrong'))
+  fanar.time('render').stop()
+</script>`} lang="html" theme="github-dark" />
+
+  <h2>ES module</h2>
+  <Code code={`<script type="module">
+  import fanar from 'https://cdn.jsdelivr.net/npm/@fanar-app/fanar-browser/dist/index.js'
+
+  fanar('hello')
+  fanar({ user, cart }).label('checkout')
+  fanar.time('render').stop()
+</script>`} lang="html" theme="github-dark" />
+
+  <h2>npm</h2>
+  <Code code={`npm install @fanar-app/fanar-browser`} lang="bash" theme="github-dark" />
+  <Code code={`import fanar from '@fanar-app/fanar-browser'
+
+fanar('hello')
+fanar({ user, session }).label('auth')
+fanar(new Error('oops'))
+fanar.time('paint').stop()`} lang="javascript" theme="github-dark" />
+
+  <h2>API</h2>
+  <table>
+    <tr><th>Call</th><th>Description</th></tr>
+    <tr><td>fanar(value)</td><td>Auto-dispatch — string/number → log, object → dump, Error → exception</td></tr>
+    <tr><td>.label(str)</td><td>Chain a label onto any call</td></tr>
+    <tr><td>.color(str)</td><td>Chain a color tag onto any call</td></tr>
+    <tr><td>fanar.time(label)</td><td>Start a named timer — call <code>.stop()</code> to send elapsed ms</td></tr>
+    <tr><td>fanar.query(sql, opts)</td><td>Send a SQL query with optional bindings and duration</td></tr>
+    <tr><td>fanar.clear()</td><td>Clear all payloads in the Fanar app</td></tr>
+    <tr><td>fanar.configure(opts)</td><td>Set <code>host</code> and <code>port</code> (default: <code>localhost:23517</code>)</td></tr>
+  </table>
+
+  <h2>Configuration</h2>
+  <Code code={`fanar.configure({ host: '192.168.1.5', port: 23517 })`} lang="javascript" theme="github-dark" />
+
+  <h2>CORS</h2>
+  <p>The Fanar app must have CORS enabled to accept requests from browser pages. This is on by default for <code>localhost</code> origins. For remote hosts, set <code>FANAR_CORS_ORIGIN</code> in the Fanar app config.</p>
+</DocsLayout>

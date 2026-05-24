@@ -1,7 +1,7 @@
 ---
 import { Code } from 'astro:components';
 
-const tabs = ['Node.js', 'NestJS', 'PHP', 'Laravel', 'HTTP API'] as const;
+const tabs = ['Node.js', 'NestJS', 'PHP', 'Laravel', 'Browser', 'HTTP API'] as const;
 
 const snippets: Record<string, { lang: string; code: string }> = {
   'Node.js': {
@@ -48,6 +48,16 @@ FANAR_HOST=127.0.0.1
 FANAR_PORT=9913
 
 // Auto-logs every request, query, and exception`,
+  },
+  'Browser': {
+    lang: 'html',
+    code: `<script src="https://cdn.jsdelivr.net/npm/@fanar-app/fanar-browser/dist/fanar.js"></script>
+<script>
+  fanar('hello from the browser')
+  fanar({ user, cart }).label('checkout')
+  fanar(new Error('something went wrong'))
+  fanar.time('render').stop()
+</script>`,
   },
   'HTTP API': {
     lang: 'bash',
