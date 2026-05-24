@@ -5,17 +5,11 @@ import { Code } from 'astro:components';
 
 <DocsLayout title="Laravel" section="laravel">
   <h1>Laravel</h1>
-  <p class="lead">Register the Fanar service provider and every request, query, exception, and cache event is captured automatically. Zero boilerplate.</p>
+  <p class="lead">Install the package and every HTTP request, Eloquent query, and unhandled exception is captured automatically. Zero boilerplate.</p>
 
   <h2>Installation</h2>
-  <Code code={`composer require fanar/fanar`} lang="bash" theme="github-dark" />
-
-  <h2>Register the service provider</h2>
-  <Code code={`// config/app.php
-'providers' => [
-    // ...
-    Fanar\\Laravel\\FanarServiceProvider::class,
-],`} lang="php" theme="github-dark" />
+  <Code code={`composer require fanar-app/fanar`} lang="bash" theme="github-dark" />
+  <p>The service provider is auto-discovered. No manual registration required.</p>
 
   <h2>Environment variables</h2>
   <Code code={`# .env
@@ -27,24 +21,48 @@ FANAR_ENABLED=true`} lang="bash" theme="github-dark" />
     <tr><th>Variable</th><th>Default</th><th>Description</th></tr>
     <tr><td>FANAR_HOST</td><td>127.0.0.1</td><td>Hostname of the machine running Fanar</td></tr>
     <tr><td>FANAR_PORT</td><td>23517</td><td>Port the Fanar desktop app is listening on</td></tr>
-    <tr><td>FANAR_ENABLED</td><td>true</td><td>Set to <code>false</code> to disable without removing the provider</td></tr>
+    <tr><td>FANAR_ENABLED</td><td>true</td><td>Set to <code>false</code> to disable without removing the package</td></tr>
   </table>
 
   <h2>What gets captured automatically</h2>
   <ul>
-    <li>Every HTTP request — method, path, status, duration, query count</li>
-    <li>All Eloquent / DB queries — SQL, bindings, execution time</li>
-    <li>Uncaught exceptions — with stack trace</li>
-    <li>Cache hits and misses</li>
-    <li>Queued jobs — dispatch and execution</li>
+    <li>Every HTTP request — method, path, status code, duration, query count</li>
+    <li>All Eloquent and DB queries — SQL, bindings, execution time</li>
+    <li>Unhandled exceptions — with full stack trace</li>
   </ul>
+  <p>Queries and exceptions are grouped under their originating request in the feed.</p>
+
+  <h2>Eloquent model events</h2>
+  <p>Add the <code>HasFanarLogging</code> trait to any model to capture <code>created</code>, <code>updated</code>, and <code>deleted</code> events. Updated models also include a <code>_changes</code> diff showing only the changed attributes.</p>
+  <Code code={`use Fanar\\Laravel\\HasFanarLogging;
+
+class Order extends Model
+{
+    use HasFanarLogging;
+}`} lang="php" theme="github-dark" />
+  <p>Each event appears in the feed labelled <code>Order::created</code>, <code>Order::updated</code>, etc., with the model's full attribute payload.</p>
+  <p>To observe a model without modifying it, register the observer manually:</p>
+  <Code code={`use Fanar\\Laravel\\FanarModelObserver;
+
+// In a service provider or AppServiceProvider::boot()
+Order::observe(FanarModelObserver::class);`} lang="php" theme="github-dark" />
 
   <h2>Manual calls</h2>
-  <p>You can also call Fanar directly anywhere in your Laravel app.</p>
+  <p>Use the <code>fanar()</code> helper anywhere — controllers, jobs, commands, services. Type is inferred automatically.</p>
+  <Code code={`fanar('processing order #' . $order->id);  // log
+fanar($order->toArray());                   // object — JSON tree
+fanar($e);                                  // exception — stack trace
+
+fanar($user, ['label' => 'signup', 'project' => 'auth']);`} lang="php" theme="github-dark" />
+
+  <p>Or use the static API directly:</p>
   <Code code={`use Fanar\\Fanar;
 
-// In a controller, service, command, job — anywhere
 Fanar::log('processing order #' . $order->id);
 Fanar::dump($order->toArray());
-Fanar::exception($e);`} lang="php" theme="github-dark" />
+Fanar::exception($e);
+
+$t = Fanar::time('csv-import');
+importCsv($file);
+$t->stop();`} lang="php" theme="github-dark" />
 </DocsLayout>

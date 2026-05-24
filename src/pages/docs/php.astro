@@ -8,45 +8,43 @@ import { Code } from 'astro:components';
   <p class="lead">The Fanar PHP client sends payloads over HTTP. Call the static methods anywhere in your code — controllers, services, console commands, or jobs.</p>
 
   <h2>Installation</h2>
-  <Code code={`composer require fanar/fanar`} lang="bash" theme="github-dark" />
+  <Code code={`composer require fanar-app/fanar`} lang="bash" theme="github-dark" />
 
-  <h2>Basic usage</h2>
+  <h2>Helper function</h2>
+  <p>The <code>fanar()</code> helper infers the type automatically — the same way the Node.js client does.</p>
+  <Code code={`fanar('request received');              // log
+fanar(['user' => $user, 'cart' => $cart]); // object — JSON tree
+fanar($e);                                 // exception — stack trace
+
+fanar($order, ['label' => 'new order', 'project' => 'shop']);`} lang="php" theme="github-dark" />
+
+  <h2>Static API</h2>
+  <p>Use the static methods when you need explicit control over the payload type.</p>
   <Code code={`<?php
 use Fanar\\Fanar;
 
-// String / primitive log
 Fanar::log('request received');
-
-// Any value — arrays, objects, scalars
 Fanar::dump(['user' => $user, 'orders' => $orders]);
-Fanar::dump($response->toArray());
-
-// Exceptions with stack trace
-Fanar::exception($e);
-
-// SQL with bindings and duration
-Fanar::query($sql, [
-  'bindings' => $bindings,
-  'duration' => $durationMs,
-]);`} lang="php" theme="github-dark" />
+Fanar::exception($e);`} lang="php" theme="github-dark" />
 
   <h2>Methods</h2>
   <table>
     <tr><th>Method</th><th>Description</th></tr>
     <tr><td>Fanar::log($value)</td><td>Send a string, number, or boolean as a log entry</td></tr>
     <tr><td>Fanar::dump($value)</td><td>Send any value — rendered as a collapsible tree</td></tr>
-    <tr><td>Fanar::exception($e)</td><td>Send a <code>Throwable</code> with full stack trace</td></tr>
-    <tr><td>Fanar::query($sql, $meta)</td><td>Send a SQL query with optional bindings and duration</td></tr>
+    <tr><td>Fanar::exception($e)</td><td>Send a <code>Throwable</code> with full stack trace; origin is taken from the throw site</td></tr>
   </table>
+  <p>All methods accept an optional second argument for metadata:</p>
+  <Code code={`Fanar::log('hello', ['label' => 'boot', 'project' => 'auth']);`} lang="php" theme="github-dark" />
 
   <h2>Named timers</h2>
-  <p>Measure any block of code with a named timer. Call <code>stop()</code> to send the elapsed time to the app.</p>
+  <p>Measure any block of code with a named timer. Call <code>stop()</code> to send the elapsed time to the app. Calling <code>stop()</code> more than once is safe.</p>
   <Code code={`<?php
 use Fanar\\Fanar;
 
 $t = Fanar::time('import');
 importProducts($csv);
-$t->stop();  // sends duration to the app`} lang="php" theme="github-dark" />
+$t->stop();`} lang="php" theme="github-dark" />
 
   <h2>Configuration</h2>
   <p>By default the client connects to <code>localhost:23517</code>. Configure once at boot time.</p>
@@ -54,7 +52,8 @@ $t->stop();  // sends duration to the app`} lang="php" theme="github-dark" />
 use Fanar\\Fanar;
 
 Fanar::configure([
-  'host' => '192.168.1.5',
-  'port' => 9913,
+  'host'    => '192.168.1.5',
+  'port'    => 9913,
+  'enabled' => true,
 ]);`} lang="php" theme="github-dark" />
 </DocsLayout>
