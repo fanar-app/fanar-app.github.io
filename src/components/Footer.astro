@@ -1,12 +1,12 @@
 ---
 ---
-<footer class="border-t border-[#222] border-b border-b-[#222]">
-  <div class="grid md:grid-cols-2 border-b border-[#222]">
-    <div class="border-r border-[#222] px-10 lg:px-16 py-8">
+<footer class="border-t border-[var(--border)] border-b border-b-[var(--border)]">
+  <div class="grid md:grid-cols-2 border-b border-[var(--border)]">
+    <div class="border-r border-[var(--border)] px-10 lg:px-16 py-8">
       <div class="mb-2">
-        <img src="/logo-text.png" alt="Fanar" width="225" height="48" class="h-5 w-auto" style="image-rendering: pixelated;" />
+        <img src="/logo-text.png" alt="Fanar" width="225" height="48" class="h-5 w-auto logo-adaptive" style="image-rendering: pixelated;" />
       </div>
-      <p class="text-xs font-mono text-[#555]">Built with Wails + Go · MIT © 2026</p>
+      <p class="text-xs font-mono text-[var(--text-faint)]">Built with Wails + Go · MIT © 2026</p>
     </div>
     <nav class="px-10 lg:px-16 py-8 flex flex-wrap gap-6 items-center">
       {[
@@ -15,7 +15,7 @@
         { label: 'Releases', href: 'https://github.com/fanar-app/fanar/releases' },
         { label: 'Issues', href: 'https://github.com/fanar-app/fanar/issues' },
       ].map(link => (
-        <a href={link.href} target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-[#555] hover:text-white transition-colors">
+        <a href={link.href} target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-[var(--text-faint)] hover:text-[var(--text)] transition-colors">
           {link.label}
         </a>
       ))}

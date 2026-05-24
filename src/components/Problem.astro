@@ -8,32 +8,32 @@ const rows = [
 ];
 ---
 
-<section class="border-b border-[#222]">
-  <div class="border-b border-[#222] px-10 lg:px-16 py-10">
-    <div class="text-[#a78bfa] text-xs font-mono mb-4">&lt; The problem &gt;</div>
-    <h2 class="text-4xl lg:text-5xl font-bold text-white leading-tight">
+<section class="border-b border-[var(--border)]">
+  <div class="border-b border-[var(--border)] px-10 lg:px-16 py-10">
+    <div class="text-[var(--accent-text)] text-xs font-mono mb-4">&lt; The problem &gt;</div>
+    <h2 class="text-4xl lg:text-5xl font-bold text-[var(--text)] leading-tight">
       The Old Way vs.<br />The Fanar Way.
     </h2>
   </div>
 
-  <div class="grid grid-cols-2 border-b border-[#222]">
-    <div class="border-r border-[#222] px-10 lg:px-12 py-4">
+  <div class="grid grid-cols-2 border-b border-[var(--border)]">
+    <div class="border-r border-[var(--border)] px-10 lg:px-12 py-4">
       <span class="text-xs font-mono text-red-400 tracking-widest">WITHOUT FANAR</span>
     </div>
     <div class="px-10 lg:px-12 py-4">
-      <span class="text-xs font-mono text-[#a78bfa] tracking-widest">WITH FANAR</span>
+      <span class="text-xs font-mono text-[var(--accent-text)] tracking-widest">WITH FANAR</span>
     </div>
   </div>
 
   {rows.map(row => (
-    <div class="grid grid-cols-2 border-b border-[#222] last:border-b-0">
-      <div class="border-r border-[#222] px-10 lg:px-12 py-5 flex items-center gap-4">
+    <div class="grid grid-cols-2 border-b border-[var(--border)] last:border-b-0">
+      <div class="border-r border-[var(--border)] px-10 lg:px-12 py-5 flex items-center gap-4">
         <span class="text-red-400 shrink-0 font-mono font-bold">✕</span>
-        <span class="font-mono text-sm text-[#666]">{row.without}</span>
+        <span class="font-mono text-sm text-[var(--text-dim)]">{row.without}</span>
       </div>
       <div class="px-10 lg:px-12 py-5 flex items-center gap-4">
-        <span class="text-[#4ade80] shrink-0 font-mono font-bold">✓</span>
-        <span class="font-mono text-sm text-white">{row.with}</span>
+        <span class="text-[var(--green)] shrink-0 font-mono font-bold">✓</span>
+        <span class="font-mono text-sm text-[var(--text)]">{row.with}</span>
       </div>
     </div>
   ))}

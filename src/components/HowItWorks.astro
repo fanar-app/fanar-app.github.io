@@ -21,19 +21,19 @@ const steps = [
 ];
 ---
 
-<section class="border-b border-[#222]">
-  <div class="border-b border-[#222] px-10 lg:px-16 py-10">
-    <div class="text-[#a78bfa] text-xs font-mono mb-4">&lt; How it works &gt;</div>
-    <h2 class="text-4xl lg:text-5xl font-bold text-white leading-tight">
+<section class="border-b border-[var(--border)]">
+  <div class="border-b border-[var(--border)] px-10 lg:px-16 py-10">
+    <div class="text-[var(--accent-text)] text-xs font-mono mb-4">&lt; How it works &gt;</div>
+    <h2 class="text-4xl lg:text-5xl font-bold text-[var(--text)] leading-tight">
       Three Steps.<br />Full Visibility.
     </h2>
   </div>
   <div class="grid md:grid-cols-3">
     {steps.map((step, i) => (
-      <div class={`p-10 lg:p-12 ${i < steps.length - 1 ? 'border-r border-[#222]' : ''}`}>
-        <div class="text-xs font-mono text-[#a78bfa] mb-6">{step.num}</div>
-        <h3 class="text-lg font-bold text-white font-mono mb-4">{step.title}</h3>
-        <code class="block text-xs text-[#4ade80] font-mono bg-[#080808] border border-[#222] px-3 py-2">
+      <div class={`p-10 lg:p-12 ${i < steps.length - 1 ? 'border-r border-[var(--border)]' : ''}`}>
+        <div class="text-xs font-mono text-[var(--accent-text)] mb-6">{step.num}</div>
+        <h3 class="text-lg font-bold text-[var(--text)] font-mono mb-4">{step.title}</h3>
+        <code class="block text-xs text-[var(--green)] font-mono bg-[var(--bg-card)] border border-[var(--border)] px-3 py-2">
           {step.code}
         </code>
       </div>

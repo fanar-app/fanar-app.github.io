@@ -1,13 +1,47 @@
 @import "tailwindcss";
 @import "@hackernoon/pixel-icon-library/fonts/iconfont.css";
 
+:root {
+  --bg: #000;
+  --bg-card: #080808;
+  --bg-hover: #0a0a0a;
+  --bg-selected: #111;
+  --border: #222;
+  --border-mid: #333;
+  --border-subtle: #111;
+  --text: #fff;
+  --text-muted: #888;
+  --text-dim: #666;
+  --text-faint: #555;
+  --text-ghost: #444;
+  --accent-text: #a78bfa;
+  --green: #4ade80;
+}
+
+html.light {
+  --bg: #f8f8f8;
+  --bg-card: #f0f0f0;
+  --bg-hover: #eaeaea;
+  --bg-selected: #e5e5e5;
+  --border: #ddd;
+  --border-mid: #c8c8c8;
+  --border-subtle: #ebebeb;
+  --text: #111;
+  --text-muted: #555;
+  --text-dim: #666;
+  --text-faint: #777;
+  --text-ghost: #777;
+  --accent-text: #6d28d9;
+  --green: #16a34a;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: #000;
-  color: #fff;
+  background-color: var(--bg);
+  color: var(--text);
   font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   background-image:
@@ -15,7 +49,42 @@ body {
     repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(255,255,255,0.03) 79px, rgba(255,255,255,0.03) 80px);
 }
 
+html.light body {
+  background-image:
+    repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(0,0,0,0.04) 79px, rgba(0,0,0,0.04) 80px),
+    repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(0,0,0,0.04) 79px, rgba(0,0,0,0.04) 80px);
+}
+
 h1, h2, h3, .font-display {
   font-family: 'JetBrains Mono', 'Courier New', monospace;
   letter-spacing: -0.02em;
+}
+
+.nav-glass {
+  background: rgba(0, 0, 0, 0.9);
+}
+html.light .nav-glass {
+  background: rgba(248, 248, 248, 0.9);
+}
+
+html.light .logo-adaptive {
+  filter: invert(1);
+}
+
+/* Smooth theme transition — only active during the toggle */
+html.theme-transitioning * {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease !important;
+}
+
+/* Scroll-in animations */
+@media not (prefers-reduced-motion: reduce) {
+  .section-animate {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .section-animate.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

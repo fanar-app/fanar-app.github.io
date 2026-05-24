@@ -29,9 +29,14 @@ import '../styles/global.css';
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet" />
+    <script is:inline>
+      if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light');
+      }
+    </script>
   </head>
   <body>
-    <div class="max-w-[1400px] mx-auto border-x border-[#222]">
+    <div class="max-w-[1400px] mx-auto border-x border-[var(--border)]">
       <Nav />
       <main>
         <Hero />
@@ -46,3 +51,20 @@ import '../styles/global.css';
     </div>
   </body>
 </html>
+
+<script>
+  // Scroll-in animations for all sections except the first (hero)
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
+
+  Array.from(document.querySelectorAll('main section')).slice(1).forEach(el => {
+    el.classList.add('section-animate');
+    observer.observe(el);
+  });
+</script>

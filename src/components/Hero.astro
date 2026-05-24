@@ -1,13 +1,13 @@
 ---
 ---
-<section class="grid lg:grid-cols-[2fr_3fr] border-b border-[#222] min-h-[88vh]">
+<section class="grid lg:grid-cols-[2fr_3fr] border-b border-[var(--border)] min-h-[88vh]">
   <!-- Left cell -->
-  <div class="border-r border-[#222] px-10 pb-10 lg:px-16 lg:pb-16 flex flex-col justify-start pt-[12vh] lg:pt-[15vh]">
-    <div class="text-[#a78bfa] text-xs font-mono mb-8 tracking-wide">
+  <div class="border-r border-[var(--border)] px-10 pb-10 lg:px-16 lg:pb-16 flex flex-col justify-start pt-[12vh] lg:pt-[15vh]">
+    <div class="text-[var(--accent-text)] text-xs font-mono mb-8 tracking-wide">
       &lt; Free &amp; Open Source · MIT &gt;
     </div>
 
-    <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.05] mb-6">
+    <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold text-[var(--text)] leading-[1.05] mb-6">
       See What<br />Your App<br />Is Doing.
     </h1>
 
@@ -17,7 +17,7 @@
       </span>
     </div>
 
-    <p class="text-[#888] text-base max-w-sm mb-10 leading-relaxed">
+    <p class="text-[var(--text-muted)] text-base max-w-sm mb-10 leading-relaxed">
       A debug receiver for any language or runtime.
       Send objects, errors, SQL, and timers — watch them stream
       into the desktop app in real time.
@@ -26,35 +26,35 @@
     <div class="flex items-center gap-3 flex-wrap mb-8">
       <a
         href="#downloads"
-        class="border border-white px-5 py-2.5 text-black bg-white font-mono text-sm font-bold hover:bg-transparent hover:text-white transition-colors"
+        class="border border-[var(--text)] px-5 py-2.5 text-[var(--bg)] bg-[var(--text)] font-mono text-sm font-bold hover:bg-transparent hover:text-[var(--text)] transition-colors"
       >
         Download ↓
       </a>
       <a
         href="/docs/"
-        class="border border-[#333] px-5 py-2.5 text-[#888] font-mono text-sm hover:border-white hover:text-white transition-colors"
+        class="border border-[var(--border-mid)] px-5 py-2.5 text-[var(--text-muted)] font-mono text-sm hover:border-[var(--text)] hover:text-[var(--text)] transition-colors"
       >
         Read the docs →
       </a>
     </div>
 
-    <div class="flex items-center gap-4 text-xs font-mono text-[#555]">
+    <div class="flex items-center gap-4 text-xs font-mono text-[var(--text-faint)]">
       <div class="flex items-center gap-2">
         <span class="w-1.5 h-1.5 bg-[#4ade80]"></span>
         <span>macOS · Windows · Linux</span>
       </div>
-      <span class="text-[#333]">·</span>
+      <span class="text-[var(--border-mid)]">·</span>
       <a
         href="https://github.com/fanar-app/fanar"
         target="_blank"
         rel="noopener noreferrer"
         id="hero-star-count"
-        class="hover:text-white transition-colors"
+        class="hover:text-[var(--text)] transition-colors"
       >★ GitHub</a>
     </div>
   </div>
 
-  <!-- Right cell: video -->
+  <!-- Right cell: video — intentionally dark to match the app UI -->
   <div class="hidden lg:flex items-stretch overflow-hidden">
     <div class="w-full flex flex-col">
       <div class="flex items-center gap-1.5 px-4 py-3 border-b border-[#222] bg-black">

@@ -60,37 +60,37 @@ FANAR_PORT=9913
 };
 ---
 
-<section class="border-b border-[#222]">
+<section class="border-b border-[var(--border)]">
   <!-- Header: 2-column split -->
-  <div class="grid lg:grid-cols-2 border-b border-[#222]">
-    <div class="border-r border-[#222] px-10 lg:px-16 py-10">
-      <div class="text-[#a78bfa] text-xs font-mono mb-4">&lt; Client libraries &gt;</div>
-      <h2 class="text-4xl lg:text-5xl font-bold text-white leading-tight">
+  <div class="grid lg:grid-cols-2 border-b border-[var(--border)]">
+    <div class="border-r border-[var(--border)] px-10 lg:px-16 py-10">
+      <div class="text-[var(--accent-text)] text-xs font-mono mb-4">&lt; Client libraries &gt;</div>
+      <h2 class="text-4xl lg:text-5xl font-bold text-[var(--text)] leading-tight">
         Send From Anywhere.
       </h2>
     </div>
     <div class="px-10 lg:px-16 py-10 flex flex-col justify-center gap-5">
-      <p class="text-[#555] text-sm font-mono leading-relaxed">
+      <p class="text-[var(--text-faint)] text-sm font-mono leading-relaxed">
         One package for Node. One import for NestJS or Laravel.<br />
         Or skip the library — plain HTTP works from anything.
       </p>
-      <div class="text-xs text-[#4ade80] font-mono bg-[#080808] border border-[#222] px-4 py-3 flex items-center gap-0.5 w-fit min-w-[220px]">
+      <div class="text-xs text-[var(--green)] font-mono bg-[var(--bg-card)] border border-[var(--border)] px-4 py-3 flex items-center gap-0.5 w-[300px]">
         <span id="install-cmd"></span><span class="typewriter-cursor">▌</span>
       </div>
     </div>
   </div>
 
   <!-- Tab bar -->
-  <div class="flex border-b border-[#222] overflow-x-auto" role="tablist">
+  <div class="flex border-b border-[var(--border)] overflow-x-auto" role="tablist">
     {tabs.map((tab, i) => (
       <button
         role="tab"
         data-tab={tab}
         aria-selected={i === 0 ? 'true' : 'false'}
-        class={`px-6 py-3.5 text-xs font-mono whitespace-nowrap border-r border-[#222] transition-colors tab-btn ${
+        class={`px-6 py-3.5 text-xs font-mono whitespace-nowrap border-r border-[var(--border)] transition-colors tab-btn ${
           i === 0
-            ? 'text-white bg-[#111] border-b-2 border-b-[#7c3aed]'
-            : 'text-[#555] hover:text-white'
+            ? 'text-[var(--text)] bg-[var(--bg-selected)] border-b-2 border-b-[#7c3aed]'
+            : 'text-[var(--text-faint)] hover:text-[var(--text)]'
         }`}
       >
         {tab}
@@ -178,18 +178,31 @@ FANAR_PORT=9913
   document.querySelectorAll<HTMLElement>('section:has(.tab-btn)').forEach(section => {
     const buttons = section.querySelectorAll<HTMLButtonElement>('.tab-btn');
 
-    buttons.forEach(btn => {
+    buttons.forEach((btn, index) => {
+      btn.addEventListener('keydown', (e: KeyboardEvent) => {
+        let targetIndex = -1;
+        if (e.key === 'ArrowRight') targetIndex = (index + 1) % buttons.length;
+        else if (e.key === 'ArrowLeft') targetIndex = (index - 1 + buttons.length) % buttons.length;
+        else if (e.key === 'Home') targetIndex = 0;
+        else if (e.key === 'End') targetIndex = buttons.length - 1;
+        if (targetIndex !== -1) {
+          e.preventDefault();
+          buttons[targetIndex].focus();
+          buttons[targetIndex].click();
+        }
+      });
+
       btn.addEventListener('click', () => {
         const target = btn.dataset.tab!;
 
         buttons.forEach(b => {
-          b.classList.remove('text-white', 'bg-[#111]', 'border-b-2', 'border-b-[#7c3aed]');
-          b.classList.add('text-[#555]');
+          b.classList.remove('text-[var(--text)]', 'bg-[var(--bg-selected)]', 'border-b-2', 'border-b-[#7c3aed]');
+          b.classList.add('text-[var(--text-faint)]');
           b.setAttribute('aria-selected', 'false');
         });
 
-        btn.classList.add('text-white', 'bg-[#111]', 'border-b-2', 'border-b-[#7c3aed]');
-        btn.classList.remove('text-[#555]');
+        btn.classList.add('text-[var(--text)]', 'bg-[var(--bg-selected)]', 'border-b-2', 'border-b-[#7c3aed]');
+        btn.classList.remove('text-[var(--text-faint)]');
         btn.setAttribute('aria-selected', 'true');
 
         section.querySelectorAll<HTMLElement>('.tab-panel').forEach(p => {

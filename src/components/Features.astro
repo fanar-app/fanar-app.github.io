@@ -9,24 +9,23 @@ const features = [
 ];
 ---
 
-<section class="border-b border-[#222]">
-  <div class="border-b border-[#222] px-10 lg:px-16 py-10">
-    <div class="text-[#a78bfa] text-xs font-mono mb-4">&lt; Features &gt;</div>
-    <h2 class="text-4xl lg:text-5xl font-bold text-white leading-tight">
+<section class="border-b border-[var(--border)]">
+  <div class="border-b border-[var(--border)] px-10 lg:px-16 py-10">
+    <div class="text-[var(--accent-text)] text-xs font-mono mb-4">&lt; Features &gt;</div>
+    <h2 class="text-4xl lg:text-5xl font-bold text-[var(--text)] leading-tight">
       Built For The Way<br />Developers Work.
     </h2>
   </div>
   <div class="grid md:grid-cols-3">
     {features.map((f, i) => (
-      <div class={`p-10 border-[#222] ${
-        // top row gets border-bottom, all get border-right except last in row
+      <div class={`p-10 border-[var(--border)] ${
         i < 3 ? 'border-b' : ''
       } ${
         i % 3 !== 2 ? 'border-r' : ''
       }`}>
-        <i class={`hn hn-${f.icon} text-[#a78bfa] text-xl mb-6 block`}></i>
-        <h3 class="font-mono font-bold text-white text-base mb-2">{f.title}</h3>
-        <p class="text-xs text-[#444] font-mono leading-relaxed">{f.desc}</p>
+        <i class={`hn hn-${f.icon} text-[var(--accent-text)] text-xl mb-6 block`}></i>
+        <h3 class="font-mono font-bold text-[var(--text)] text-base mb-2">{f.title}</h3>
+        <p class="text-xs text-[var(--text-ghost)] font-mono leading-relaxed">{f.desc}</p>
       </div>
     ))}
   </div>

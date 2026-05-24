@@ -2,15 +2,17 @@
 const isHome = Astro.url?.pathname === '/';
 const downloadHref = isHome ? '#downloads' : '/#downloads';
 ---
-<nav class="border-b border-[#222] sticky top-0 z-50 bg-black/90 backdrop-blur-sm">
-  <div class="flex items-center justify-between h-12">
-    <a href="/" class="flex items-center px-6 border-r border-[#222] h-full w-56 shrink-0">
-      <img src="/logo-text.png" alt="Fanar" width="225" height="48" class="h-8 w-auto" style="image-rendering: pixelated;" />
+<nav class="border-b border-[var(--border)] sticky top-0 z-50 nav-glass backdrop-blur-sm">
+  <div class="flex items-center h-12">
+    <a href="/" class="flex items-center px-4 sm:px-6 h-full shrink-0 sm:w-56 sm:border-r border-[var(--border)]">
+      <img src="/logo-text.png" alt="Fanar" width="225" height="48" class="h-7 sm:h-8 w-auto logo-adaptive" style="image-rendering: pixelated;" />
     </a>
-    <div class="flex items-center h-full">
+
+    <!-- Desktop links -->
+    <div class="hidden sm:flex items-center h-full ml-auto">
       <a
         href="/docs/"
-        class="flex items-center gap-2 px-5 h-full border-l border-[#222] text-xs font-mono text-[#555] hover:text-white transition-colors"
+        class="flex items-center gap-2 px-5 h-full border-l border-[var(--border)] text-xs font-mono text-[var(--text-faint)] hover:text-[var(--text)] transition-colors"
       >
         <i class="hn hn-book text-sm"></i>
         Docs
@@ -19,32 +21,136 @@ const downloadHref = isHome ? '#downloads' : '/#downloads';
         href="https://github.com/fanar-app/fanar"
         target="_blank"
         rel="noopener noreferrer"
-        class="flex items-center gap-2 px-5 h-full border-l border-[#222] text-xs font-mono text-[#555] hover:text-white transition-colors"
+        class="flex items-center gap-2 px-5 h-full border-l border-[var(--border)] text-xs font-mono text-[var(--text-faint)] hover:text-[var(--text)] transition-colors"
       >
         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
           <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/>
         </svg>
-        <span id="star-count">Star</span>
+        <span class="star-count">Star</span>
       </a>
+      <button
+        class="theme-toggle-btn flex items-center justify-center w-10 h-full border-l border-[var(--border)] text-[var(--text-faint)] hover:text-[var(--text)] transition-colors"
+        aria-label="Toggle theme"
+      >
+        <svg class="sun-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+        </svg>
+        <svg class="moon-icon hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
       <a
         href={downloadHref}
-        class="flex items-center gap-2 px-5 h-full border-l border-[#222] text-xs font-mono font-bold text-black bg-white hover:bg-[#7c3aed] hover:text-white transition-colors"
+        class="flex items-center gap-2 px-5 h-full border-l border-[var(--border)] text-xs font-mono font-bold bg-[var(--text)] text-[var(--bg)] hover:bg-[#7c3aed] hover:text-white transition-colors"
       >
         <i class="hn hn-download text-sm"></i>
         Download
       </a>
     </div>
+
+    <!-- Mobile right side -->
+    <div class="flex sm:hidden items-center h-full ml-auto">
+      <button
+        class="theme-toggle-btn flex items-center justify-center w-10 h-full border-l border-[var(--border)] text-[var(--text-faint)] hover:text-[var(--text)] transition-colors"
+        aria-label="Toggle theme"
+      >
+        <svg class="sun-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+        </svg>
+        <svg class="moon-icon hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <button
+        id="mobile-menu-btn"
+        class="flex items-center justify-center w-10 h-full border-l border-[var(--border)] text-[var(--text-faint)] hover:text-[var(--text)] transition-colors"
+        aria-label="Menu"
+        aria-expanded="false"
+      >
+        <svg id="hamburger-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <svg id="close-icon" class="hidden" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile dropdown -->
+  <div id="mobile-menu" class="hidden sm:hidden border-t border-[var(--border)] nav-glass">
+    <a href="/docs/" class="flex items-center gap-3 px-6 py-4 text-sm font-mono text-[var(--text-faint)] hover:text-[var(--text)] border-b border-[var(--border)] transition-colors">
+      <i class="hn hn-book"></i> Docs
+    </a>
+    <a href="https://github.com/fanar-app/fanar" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 px-6 py-4 text-sm font-mono text-[var(--text-faint)] hover:text-[var(--text)] border-b border-[var(--border)] transition-colors">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+        <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/>
+      </svg>
+      <span class="star-count">Star on GitHub</span>
+    </a>
+    <a href={downloadHref} class="flex items-center gap-3 px-6 py-4 text-sm font-mono font-bold bg-[var(--text)] text-[var(--bg)] hover:bg-[#7c3aed] hover:text-white transition-colors">
+      <i class="hn hn-download"></i> Download
+    </a>
   </div>
 </nav>
 
 <script>
+  // GitHub star count (update all instances)
   fetch('https://api.github.com/repos/fanar-app/fanar')
     .then(r => r.json())
     .then(data => {
-      const el = document.getElementById('star-count');
-      if (el && typeof data.stargazers_count === 'number') {
+      if (typeof data.stargazers_count !== 'number') return;
+      document.querySelectorAll('.star-count').forEach(el => {
         el.textContent = `★ ${data.stargazers_count.toLocaleString()}`;
-      }
+      });
     })
     .catch(() => {});
+
+  const html = document.documentElement;
+
+  function applyTheme(light) {
+    html.classList.toggle('light', light);
+    document.querySelectorAll('.sun-icon').forEach(el => el.classList.toggle('hidden', light));
+    document.querySelectorAll('.moon-icon').forEach(el => el.classList.toggle('hidden', !light));
+  }
+
+  // Sync icons with current state on load
+  applyTheme(html.classList.contains('light'));
+
+  // Theme toggle — all buttons (desktop + mobile)
+  document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      html.classList.add('theme-transitioning');
+      const light = !html.classList.contains('light');
+      applyTheme(light);
+      localStorage.setItem('theme', light ? 'light' : 'dark');
+      setTimeout(() => html.classList.remove('theme-transitioning'), 300);
+    });
+  });
+
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const hamburgerIcon = document.getElementById('hamburger-icon');
+  const closeIcon = document.getElementById('close-icon');
+
+  menuBtn?.addEventListener('click', () => {
+    const isOpen = !mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden', isOpen);
+    hamburgerIcon?.classList.toggle('hidden', !isOpen);
+    closeIcon?.classList.toggle('hidden', isOpen);
+    menuBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  // Close mobile menu on link click
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      hamburgerIcon?.classList.remove('hidden');
+      closeIcon?.classList.add('hidden');
+      menuBtn?.setAttribute('aria-expanded', 'false');
+    });
+  });
 </script>
